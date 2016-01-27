@@ -1,12 +1,84 @@
-*.class
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+import java.math.BigInteger;
+import java.util.Scanner;
+public class subset{
+private static Scanner sc;
+private int[] a;
+private int n,r;
+private BigInteger aradeger,toplam;
 
-# Package Files #
-*.jar
-*.war
-*.ear
+public subset(int n, int r) {
+	if (r > n) { throw new IllegalArgumentException (); }
+    if (n < 1) { throw new IllegalArgumentException (); }
+    this.n = n; this.r = r;
+  a = new int[r];
+    BigInteger nfaktöriyel = Faktöriyel (n);
+    BigInteger rfaktöriyel = Faktöriyel (r);
+    BigInteger neksir = Faktöriyel (n - r);
+  toplam = nfaktöriyel.divide (rfaktöriyel.multiply (neksir));
+    reset (); }
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+public void reset () {
+  for (int i = 0; i < a.length; i++) {
+   a[i] = i; }
+   aradeger = new BigInteger (toplam.toString ()); }
+
+public BigInteger getNumLeft () {
+   return aradeger; }
+
+public boolean degerKontrol () {
+  return aradeger.compareTo (BigInteger.ZERO) == 1;} 
+   
+public BigInteger Toplam () {
+  return toplam; }
+
+private static BigInteger Faktöriyel (int n) {
+    BigInteger deger = BigInteger.ONE;
+  for (int i = n; i > 1; i--) {
+    deger = deger.multiply (new BigInteger (Integer.toString (i))); }
+    return deger; }
+
+public int[] altKume () {
+    if (aradeger.equals (toplam)) {
+	    aradeger = aradeger.subtract (BigInteger.ONE);
+    return a; }
+        int i = r - 1;
+    while (a[i] == n - r + i) {
+        i--; }
+        a[i] = a[i] + 1;
+    for (int j = i + 1; j < r; j++) {
+        a[j] = a[i] + j - i; }
+        aradeger = aradeger.subtract (BigInteger.ONE);
+    return a; }
+
+public static void main(String[] args) {
+	sc = new Scanner(System.in); int r;
+	String[] dizi;
+	System.out.println("Enter the number of cluster members: ");
+	    r=sc.nextInt();
+	    dizi=new String[r];
+	   System.out.print("{");
+	    for(int k=0;k<r;k++){ dizi[k]=""+(k+1);/*sc.next(); //if the characters can be input from the keyboard, if desired.*/
+	    if(k!=r-1)
+	    System.out.print(k+1+",");
+	    else
+	    	System.out.print(k+1);
+	    }
+	    System.out.println("} subset of the set\n");
+int[] index; long y=1;
+System.out.println("1.<null set>");
+for(int h=1;h<dizi.length+1;h++){
+	subset başla = new subset (r,h);
+	
+	StringBuffer altdeger;
+while (başla.degerKontrol ()) {
+altdeger = new StringBuffer ();
+index = başla.altKume ();
+for (int i = 0; i < index.length; i++) {
+	if(index.length!=i+1){ altdeger.append (dizi[index[i]]+",");}
+	else{	altdeger.append (dizi[index[i]]); } }
+    y++;
+if(y!=1){
+System.out.print(y+". {");
+System.out.print(altdeger.toString ());
+System.out.println("}"); } }  } } }
